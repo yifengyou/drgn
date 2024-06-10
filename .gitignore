@@ -14,3 +14,4 @@
 /python-drgn-*.src.rpm
 /python-drgn.spec
 __pycache__
+install.log

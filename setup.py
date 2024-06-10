@@ -75,6 +75,7 @@ class build_ext(_build_ext):
                 os.path.relpath("libdrgn/configure", self.build_temp),
                 "--disable-static",
                 "--enable-python",
+                "--with-libkdumpfile=yes",
             ]
             try:
                 args.extend(shlex.split(os.environ["CONFIGURE_FLAGS"]))

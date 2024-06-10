@@ -18,6 +18,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DEBUG 1
+
+void print_stack_trace();
+
+#ifdef DEBUG
+#define pr_info(fmt, ...) printf("File: %s, Line: %d, Function: %s: " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+#else
+#define pr_info(fmt, ...)
+#endif
+
 #ifndef LIBDRGN_PUBLIC
 #define LIBDRGN_PUBLIC __attribute__((__visibility__("default")))
 #endif

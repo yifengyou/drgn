@@ -2,8 +2,34 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <stdarg.h>
-
+#include <libunwind.h>
 #include "drgnpy.h"
+
+void print_stack_trace() {
+	unw_cursor_t cursor;
+	unw_context_t context;
+	int i = 0;
+
+	unw_getcontext(&context);
+	unw_init_local(&cursor, &context);
+
+	while (unw_step(&cursor) > 0) {
+		unw_word_t offset, pc;
+		char fname[128];
+
+		unw_get_reg(&cursor, UNW_REG_IP, &pc);
+		if (pc == 0) {
+			break;
+		}
+		printf("#%lu [0x%016lx]", i, pc);
+		i++;
+		if (unw_get_proc_name(&cursor, fname, sizeof(fname), &offset) == 0) {
+			printf(" %s + 0x%lx\n", fname, offset);
+		} else {
+			printf(" -- error: unable to obtain symbol name for this frame\n");
+		}
+	}
+}
 
 int append_string(PyObject *parts, const char *s)
 {

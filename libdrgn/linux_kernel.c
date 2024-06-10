@@ -189,6 +189,7 @@ static struct drgn_error *linux_kernel_get_page_mask(struct drgn_program *prog,
 					~(prog->vmcoreinfo.page_size - 1), 0);
 }
 
+
 static struct drgn_error *
 linux_kernel_get_uts_release(struct drgn_program *prog, struct drgn_object *ret)
 {
@@ -218,6 +219,9 @@ static struct drgn_error *linux_kernel_get_jiffies(struct drgn_program *prog,
 {
 	struct drgn_error *err;
 	DRGN_OBJECT(jiffies_64, prog);
+
+	print_stack_trace();
+
 	err = drgn_program_find_object(prog, "jiffies_64", NULL,
 				       DRGN_FIND_OBJECT_VARIABLE, &jiffies_64);
 	if (err) {
